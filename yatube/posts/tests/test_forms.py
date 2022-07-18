@@ -9,7 +9,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 
-from posts.forms import CommentForm, PostForm
+from posts.forms import PostForm
 from posts.models import Comment, Group, Post
 
 User = get_user_model()
@@ -219,7 +219,6 @@ class TestCreateFormTests(TestCase):
         comment = Comment.objects.filter(pk=self.post.id).first()
         comment_text_0 = comment.text
         self.assertEqual(comment_text_0, form_data['text'])
-
 
     def test_form_is_not_created_comment(self):
         """Валидная форма не создает запись в Comment

@@ -11,7 +11,7 @@ from .utils import paginator_yatube
 User = get_user_model()
 
 
-@cache_page(50, key_prefix='index_page')
+@cache_page(60 * 20, key_prefix='index_page')
 def index(request):
     post_list = Post.objects.select_related('author', 'group')
     page_obj = paginator_yatube(request, post_list)

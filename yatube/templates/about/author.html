@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<h1>Привет, я автор</h1>
+<p>
+  Тут котик без которого ничего бы не получилось.
+</p>
+<img src="{% static 'img/about/mycat.jpg' %}" width="400" class="d-inline-block align-top" alt="тут очень крутой кот"> 
+{% endblock %}

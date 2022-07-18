@@ -252,7 +252,7 @@ class SubcribtionTests(TestCase):
         ).count()
         self.assertEqual(following_number, 0)
 
-    def test_news_lent(self):
+    def test_new_post_in_news(self):
         """Новая запись пользователя появляется
         в ленте тех, кто на него подписан
         и не появляется в ленте тех, кто не подписан.

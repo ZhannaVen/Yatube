@@ -36,13 +36,10 @@ def profile(request, username):
     post_list = profile.posts.select_related('group')
     page_obj = paginator_yatube(request, post_list)
     user = request.user
-    if user != profile:
-        following = (
-            request.user.is_authenticated
-            and profile.following.filter(user=user)
-        )
-    else:
-        following = False
+    following = (
+        request.user.is_authenticated
+        and profile.following.filter(user=user).exists()
+    )
     context = {
         'profile': profile,
         'page_obj': page_obj,
@@ -59,7 +56,7 @@ def post_detail(request, post_id):
     context = {
         'post': post,
         'form': CommentForm(),
-        'comment_list': post.comments.select_related('author'),
+        'comment_list': post.comments.all()
     }
     return render(request, 'posts/post_detail.html', context)
 

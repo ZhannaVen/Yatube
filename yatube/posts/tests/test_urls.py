@@ -149,12 +149,7 @@ class PostURLTests(TestCase):
 
         for url, args in self.urls:
             response = self.authorized_client2.get(reverse(url, args=args))
-            if url in ('posts:post_edit',):
-                self.assertRedirects(
-                    response,
-                    reverse('posts:post_detail', args=(self.post.id,))
-                )
-            elif url in ('posts:add_comment',):
+            if url in ('posts:post_edit', 'posts:add_comment',):
                 self.assertRedirects(
                     response,
                     reverse('posts:post_detail', args=(self.post.id,))

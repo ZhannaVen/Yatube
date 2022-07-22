@@ -290,9 +290,9 @@ class SubcribtionTests(TestCase):
             author=self.user2,
             text='Тестовая запись пользователя 2',
         )
-
-        self.authorized_client1.get(
-            reverse('posts:profile_follow', args=(self.user2,))
+        Follow.objects.create(
+            user=self.user1,
+            author=self.user2,
         )
         response = self.authorized_client1.get(
             reverse('posts:follow_index')

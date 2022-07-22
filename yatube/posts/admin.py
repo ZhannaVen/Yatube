@@ -36,10 +36,8 @@ class CommentAdmin(admin.ModelAdmin):
         'author',
         'post'
     )
-    list_editable = ('author',)
     search_fields = ('text',)
     list_filter = ('pub_date',)
-    empty_value_display = '-пусто-'
 
 
 class FollowAdmin(admin.ModelAdmin):

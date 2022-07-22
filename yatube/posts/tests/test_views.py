@@ -262,7 +262,7 @@ class SubcribtionTests(TestCase):
         """Авторизованный пользователь может
         отписываться от других пользователей."""
 
-        following = Follow.objects.create(
+        Follow.objects.create(
             user=self.user1,
             author=self.user2,
         )

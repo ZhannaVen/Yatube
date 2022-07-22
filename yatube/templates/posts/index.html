@@ -4,10 +4,13 @@
 {% endblock title %}
 {% block content %}
   {% include 'posts/includes/switcher.html' %}
-  <div class="container py-5">   
+  <div class="container py-5">
+    {% load cache %}
+    {% cache 20 index_page%}   
     {% for post in page_obj %}
       {% include 'posts/includes/post_card.html' %}
     {% endfor %}
+    {% endcache %}
     {% include 'posts/includes/paginator.html' %}
   </div>  
 {% endblock %}

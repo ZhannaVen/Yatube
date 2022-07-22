@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post
@@ -11,7 +10,6 @@ from .utils import paginator_yatube
 User = get_user_model()
 
 
-@cache_page(60 * 20, key_prefix='index_page')
 def index(request):
     post_list = Post.objects.select_related('author', 'group')
     page_obj = paginator_yatube(request, post_list)
@@ -23,7 +21,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.all()
+    post_list = group.posts.select_related('author')
     page_obj = paginator_yatube(request, post_list)
 
     context = {
@@ -38,12 +36,11 @@ def profile(request, username):
     post_list = profile.posts.select_related('group')
     page_obj = paginator_yatube(request, post_list)
     user = request.user
-    if (
-        (request.user.is_authenticated)
-        and (profile.following.filter(user=user))
-        and (user != profile)
-    ):
-        following = True
+    if user != profile:
+        following = (
+            request.user.is_authenticated
+            and profile.following.filter(user=user)
+        )
     else:
         following = False
     context = {
@@ -55,12 +52,14 @@ def profile(request, username):
 
 
 def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    comment_list = post.comments.select_related('author')
+    post = get_object_or_404(
+        Post.objects.prefetch_related('comments__author'),
+        pk=post_id
+    )
     context = {
         'post': post,
         'form': CommentForm(),
-        'comment_list': comment_list,
+        'comment_list': post.comments.select_related('author'),
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -113,14 +112,11 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    following = Follow.objects.filter(user=request.user).all()
-    author_list = []
-    for author in following:
-        author_list.append(author.author.id)
-    post_list = Post.objects.filter(author__in=author_list).all()
-    page_obj = paginator_yatube(request, post_list)
+    following = Post.objects.filter(
+        author__following__user=request.user
+    ).select_related('author')
+    page_obj = paginator_yatube(request, following)
     context = {
-        'author_list': author_list,
         'page_obj': page_obj,
     }
     return render(request, 'posts/follow.html', context)
@@ -130,26 +126,12 @@ def follow_index(request):
 def profile_follow(request, username):
     user = request.user
     author = get_object_or_404(User, username=username)
-    follow_number = Follow.objects.filter(
-        user=user.id,
-        author=author.id
-    ).count()
-    if follow_number == 0 and author.id != user.id:
-        Follow.objects.create(user=request.user, author=author)
+    if author.id != user.id:
+        Follow.objects.get_or_create(user=request.user, author=author)
     return redirect('posts:profile', username=username)
 
 
 @login_required
 def profile_unfollow(request, username):
-    user = request.user.id
-    author = get_object_or_404(User, username=username)
-    follow_number = Follow.objects.filter(
-        user=user,
-        author=author.id
-    ).count()
-    if follow_number == 1:
-        Follow.objects.filter(
-            user=request.user,
-            author=author
-        ).delete()
+    Follow.objects.filter(author__username=username).delete()
     return redirect('posts:profile', username=username)

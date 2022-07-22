@@ -218,7 +218,11 @@ class TestCreateFormTests(TestCase):
 
         comment = Comment.objects.filter(pk=self.post.id).first()
         comment_text_0 = comment.text
+        comment_author_0 = comment.author.username
+        comment_post_0 = comment.post.pk
         self.assertEqual(comment_text_0, form_data['text'])
+        self.assertEqual(comment_author_0, self.user.username)
+        self.assertEqual(comment_post_0, self.post.pk)
 
     def test_form_is_not_created_comment(self):
         """Валидная форма не создает запись в Comment

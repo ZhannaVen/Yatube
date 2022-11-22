@@ -46,7 +46,6 @@ class FollowAdmin(admin.ModelAdmin):
         'user',
         'author'
     )
-    list_editable = ('user', 'author')
     search_fields = ('user', 'author')
 
 

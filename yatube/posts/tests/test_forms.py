@@ -174,18 +174,18 @@ class TestCreateFormTests(TestCase):
 
         group_label = TestCreateFormTests.form.fields['group'].label
         text_label = TestCreateFormTests.form.fields['text'].label
-        self.assertEqual(group_label, 'Группа')
-        self.assertEqual(text_label, 'Текст')
+        self.assertEqual(group_label, 'Group')
+        self.assertEqual(text_label, 'Text')
 
     def test_title_help_text(self):
         """The function checks help_text."""
 
         group_help_text = TestCreateFormTests.form.fields['group'].help_text
         text_help_text = TestCreateFormTests.form.fields['text'].help_text
-        self.assertEqual(group_help_text, 'Выберите группу из списка')
+        self.assertEqual(group_help_text, 'Choose a group from the list')
         self.assertEqual(
             text_help_text,
-            'Здесь должен быть какой-нибудь текст'
+            'Some text'
         )
 
     def test_form_create_comment(self):

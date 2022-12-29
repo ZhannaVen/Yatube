@@ -13,7 +13,7 @@ class PostForm(forms.ModelForm):
         }
         help_texts = {
             'group': 'Choose a group from the list',
-            'text': 'Text of your post',
+            'text': 'Some text',
         }
 
 
@@ -25,5 +25,5 @@ class CommentForm(forms.ModelForm):
             'text': 'Text',
         }
         help_texts = {
-            'text': 'Text of your comment',
+            'text': 'Some text',
         }

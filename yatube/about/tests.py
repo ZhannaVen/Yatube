@@ -9,7 +9,7 @@ class StaticPagesURLTests(TestCase):
         self.client = Client()
 
     def test_url_is_OK(self):
-        """Проверка доступности адреса статичных страниц."""
+        """Checking the availability of the address of static pages."""
 
         addresses = ('about:author', 'about:tech')
         for address in addresses:
@@ -18,7 +18,7 @@ class StaticPagesURLTests(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_url_exists_at_desired_location(self):
-        """Проверка namespace:name = URL."""
+        """Checking namespace:name = URL."""
 
         namespaces = (
             ('about:author', '/about/author/'),
@@ -29,8 +29,8 @@ class StaticPagesURLTests(TestCase):
                 self.assertEqual(reverse(namespace), url)
 
     def test_pages_uses_correct_template(self):
-        """URL-адрес использует соответствующий шаблон.
-        Проверка namespace:name.
+        """The URL uses the appropriate pattern.
+        Checking namespace:name.
         """
 
         templates_pages_names = (

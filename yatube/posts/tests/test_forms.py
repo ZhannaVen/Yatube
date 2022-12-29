@@ -25,13 +25,13 @@ class TestCreateFormTests(TestCase):
         super().setUpClass()
         cls.user = User.objects.create_user(username='auth')
         cls.group = Group.objects.create(
-            title='Тестовая группа',
+            title='Test group',
             slug='test_group',
-            description='Тестовое описание',
+            description='Test description',
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовая запись 1',
+            text='Test post 1',
         )
         cls.form = PostForm()
 
@@ -45,9 +45,9 @@ class TestCreateFormTests(TestCase):
         self.authorized_client.force_login(self.user)
 
     def test_form_create(self):
-        """Валидная форма создает запись в Post.
-        У созданного поста совпадают: автор, группа, текст и картинка."""
-
+        """A valid form creates post in Post.
+        The created post has the same author, group, text and picture.
+        """
         post_count = Post.objects.count()
 
         small_gif = (
@@ -65,7 +65,7 @@ class TestCreateFormTests(TestCase):
         )
         form_data = {
             'group': self.group.id,
-            'text': 'Тестовая запись 2',
+            'text': 'Test post 2',
             'image': uploaded,
         }
         response = self.authorized_client.post(reverse('posts:post_create'),
@@ -78,7 +78,7 @@ class TestCreateFormTests(TestCase):
         self.assertEqual(Post.objects.count(), post_count + 1)
         self.assertTrue(
             Post.objects.filter(
-                text='Тестовая запись 2',
+                text='Test post 2',
                 group=self.group,
                 image='posts/small.gif'
             ).exists()
@@ -95,18 +95,19 @@ class TestCreateFormTests(TestCase):
         self.assertEqual(post_image_0, 'posts/small.gif')
 
     def test_form_edit(self):
-        """Валидная форма редактирует запись в Post.
-        У отредактированного поста совпадают: автор, группа и текст."""
-
+        """A valid form edits post in Post.
+        The edited post has the same author,
+        group, and text.
+        """
         group_2 = Group.objects.create(
-            title='Тестовая группа2',
+            title='Test group 2',
             slug='test_group2',
-            description='Тестовое описание2',
+            description='Test group 2',
         )
         post_count = Post.objects.count()
         form_data = {
             'group': group_2.id,
-            'text': 'Тестовая запись 1(отредактированная)',
+            'text': 'Test post 1(edited)',
         }
         response = self.authorized_client.post(
             reverse('posts:post_edit', args=(self.post.id,)),
@@ -143,14 +144,13 @@ class TestCreateFormTests(TestCase):
         )
 
     def test_form_is_not_created(self):
-        """Валидная форма не создает запись в Post
-        от неавторизованного пользователя.
+        """A valid form does not create post in Post
+        from an unauthorized user.
         """
-
         post_count = Post.objects.count()
         form_data = {
             'group': self.group.id,
-            'text': 'Тестовая запись 3',
+            'text': 'Test post 3',
         }
         response = self.client.post(
             reverse('posts:post_create'),
@@ -164,13 +164,13 @@ class TestCreateFormTests(TestCase):
         self.assertEqual(Post.objects.count(), post_count)
         self.assertFalse(
             Post.objects.filter(
-                text='Тестовая запись 3',
+                text='Test post 3',
                 group=self.group
             ).exists()
         )
 
     def test_title_label(self):
-        """Проверяем labels."""
+        """The function checks labels."""
 
         group_label = TestCreateFormTests.form.fields['group'].label
         text_label = TestCreateFormTests.form.fields['text'].label
@@ -178,7 +178,7 @@ class TestCreateFormTests(TestCase):
         self.assertEqual(text_label, 'Текст')
 
     def test_title_help_text(self):
-        """Проверяем help_text."""
+        """The function checks help_text."""
 
         group_help_text = TestCreateFormTests.form.fields['group'].help_text
         text_help_text = TestCreateFormTests.form.fields['text'].help_text
@@ -189,13 +189,12 @@ class TestCreateFormTests(TestCase):
         )
 
     def test_form_create_comment(self):
-        """Валидная форма создает запись в Comment.
-        У созданного комментария совпадает текст.
+        """A valid form creates a comment in the Comment.
+         The created comment has the same text.
         """
-
         comment_count = Comment.objects.filter(pk=self.post.id).count()
         form_data = {
-            'text': 'Комментарий к посту',
+            'text': 'A comment to the post',
         }
         response = self.authorized_client.post(
             reverse('posts:add_comment', args=(self.post.id,)),
@@ -212,7 +211,7 @@ class TestCreateFormTests(TestCase):
         )
         self.assertTrue(
             Comment.objects.filter(
-                text='Комментарий к посту',
+                text='A comment to the post',
             ).exists()
         )
 
@@ -225,13 +224,13 @@ class TestCreateFormTests(TestCase):
         self.assertEqual(comment_post_0, self.post.pk)
 
     def test_form_is_not_created_comment(self):
-        """Валидная форма не создает запись в Comment
-        от неавторизованного пользователя.
+        """A valid form does not create a comment in Comment
+        from an unauthorized user.
         """
 
         comment_count = Comment.objects.filter(pk=self.post.id).count()
         form_data = {
-            'text': 'Комментарий к посту2',
+            'text': 'Comment to the post 2',
         }
         response = self.client.post(
             reverse('posts:add_comment', args=(self.post.id,)),
@@ -248,6 +247,6 @@ class TestCreateFormTests(TestCase):
         )
         self.assertFalse(
             Comment.objects.filter(
-                text='Комментарий к посту2',
+                text='Comment to the post 2',
             ).exists()
         )

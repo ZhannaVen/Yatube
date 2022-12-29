@@ -1,9 +1,9 @@
-### YaTube - cоциальная сеть для блогеров
-### Описание
-Проект предназначен для публикации простов с картинками. Авто публикаций может подписываться на других авторов и оставлять комментарии к другим постам. Проект разделен на группы (интересы). Возможность создавать разделы есть только у Администратора.
+### YaTube - social network for bloggers
+### Description
+The project is intended for publishing posts with pictures. The author of publications can subscribe to other authors and leave comments to their posts. The project is divided into groups (interests).
 
 
-### Используемые фреймворки и библиотеки:
+### Used frameworks and libraries:
 - Python 3.7
 - Django 2.2.16
 - SQLite3
@@ -11,58 +11,37 @@
 - CSS
 
 
-### Как запустить проект (в Unix)
-- Клонировать репозиторий и перейти в него в командной строке.
-
+### How to run a project (on Unix)
+- Clone the repository.
 ```bash
 git clone git@github.com:ZhannaVen/Yatube.git
 ```
-- Установите и активируйте виртуальное окружение (потребуется python версии >= 3.7):
-
+- Install and activate the virtual environment (requires python version >= 3.7):
 ```bash
-py -3.7 -m venv venv
-```
-
-```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
-
-- Установите зависимости из файла requirements.txt
-
+- Install dependencies from requirements.txt:
 ```bash
 python -m pip install --upgrade pip
-```
-```bash
 pip install -r requirements.txt
 ```
-
-- Проведите требуемые миграции:
-
+- Run the required migrations:
 ```bash
 python manage.py migrate
 ```
-
-- При необходимости, имеется возможность наполнить базу тестовыми данными:
-
-```bash
-python manage.py load_csv
-```
-
-- Создайте суперпользователя:
-
+- Create a superuser:
 ```bash
 python manage.py createsuperuser
 ```
-
-- Запустите проект:
-
+- Run the project:
 ```bash
 python manage.py runserver
 ```
-### Роли пользователей
+### User roles
 
-- Аноним — может просматривать все публикации.
-- Аутентифицированный пользователь (user) — может, как и Аноним, читать всё, дополнительно он может публиковать посты, может комментировать чужие пцбликации; может редактировать и удалять свои посты и комментарии. Эта роль присваивается по умолчанию каждому новому пользователю.
-- Модератор (moderator) — те же права, что и у Аутентифицированного пользователя плюс право удалять любые посты и комментарии.
-- Администратор (admin) — полные права на управление всем контентом проекта. Может создавать и удалять посты и комментарии. Может назначать роли пользователям.
-- Суперюзер Django — обладает правами администратора (admin)
+- Anonymous - can view all publications.
+- Authenticated user (user) - can, like Anonymous, read everything, in addition, he can publish posts, can comment on other people's publications; can edit and delete own posts and comments. This role is assigned by default to every new user.
+- Moderator - has the same rights as the authenticated user plus the right to delete any posts and comments.
+- Administrator (admin) - has full rights to manage all project content: create and delete posts and comments, assign roles to users, create new groups.
+- Superuser Django - has the same rights as Administrator.

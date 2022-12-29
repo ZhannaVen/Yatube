@@ -8,12 +8,12 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('group', 'text', 'image')
         labels = {
-            'group': 'Группа',
-            'text': 'Текст',
+            'group': 'Group',
+            'text': 'Text',
         }
         help_texts = {
-            'group': 'Выберите группу из списка',
-            'text': 'Здесь должен быть какой-нибудь текст',
+            'group': 'Choose a group from the list',
+            'text': 'Text of your post',
         }
 
 
@@ -22,8 +22,8 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('text',)
         labels = {
-            'text': 'Текст',
+            'text': 'Text',
         }
         help_texts = {
-            'text': 'Здесь должен быть текст комментария',
+            'text': 'Text of your comment',
         }

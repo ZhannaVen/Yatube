@@ -27,13 +27,13 @@ class PostPagesTests(TestCase):
         super().setUpClass()
         cls.user = User.objects.create_user(username='TestUser')
         cls.group = Group.objects.create(
-            title='Тестовая группа',
+            title='Test group',
             slug='test_group',
-            description='Тестовое описание',
+            description='Test post',
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовая запись 1',
+            text='Test post 1',
             group=PostPagesTests.group,
             image='TestImg'
         )
@@ -67,9 +67,8 @@ class PostPagesTests(TestCase):
         return response.context['page_obj'][0]
 
     def test_pages_show_correct_context(self):
-        """Шаблоны: index.html, group_list.html, profile.html,
-        post_detail.html сформированы с правильным контекстом.
-        Также  это задание 3 - доп. проверка при создании поста.
+        """Templates: index.html, group_list.html, profile.html,
+        post_detail.html are made with right context.
         """
 
         templates = (
@@ -102,7 +101,7 @@ class PostPagesTests(TestCase):
                     self.assertEqual(object, self.post.group)
 
     def test_post_create_page_show_correct_context(self):
-        """Шаблон post_create.html сформирован с правильным контекстом."""
+        """Template post_create.html is made with right context."""
 
         templates = (
             ('posts:post_edit', (self.post.id,)),
@@ -125,17 +124,18 @@ class PostPagesTests(TestCase):
                         self.assertIsInstance(field, expected)
 
     def test_post_doesnot_belong_to_the_group_none(self):
-        """Пост не попал в группу, для которой не был предназначен."""
+        """Post was not included to the group, for which it was not intendent.
+        """
 
         second_post = Post.objects.create(
             author=self.user,
-            text='Тестовая запись 2',
+            text='Test post 2',
             group=self.group,
         )
         group_none = Group.objects.create(
-            title='Тестовая группа None',
+            title='Test group None',
             slug='test_group_none',
-            description='Какое-то тестовое описание',
+            description='Some test description',
         )
         response = self.client.get(
             reverse('posts:group_list', args=(group_none.slug,))
@@ -149,7 +149,7 @@ class PostPagesTests(TestCase):
         self.assertEqual(second_post, response.context['page_obj'][0])
 
     def test_cache_index(self):
-        """Тестирование функции кэша на главной странице."""
+        """Testing the cache function on the main page."""
 
         response = self.client.get(reverse('posts:index'))
         content_old = response.content
@@ -172,14 +172,14 @@ class PaginatorPagesTests(TestCase):
         cls.user = User.objects.create_user(username='TestUser3')
         cls.user2 = User.objects.create_user(username='UserForTestFollow')
         cls.group = Group.objects.create(
-            title='Тестовая группа3',
+            title='Test group 3',
             slug='test_group3',
-            description='Тестовое описание3',
+            description='Test description 3',
         )
         for post in range(settings.NUM2):
             cls.post = Post.objects.create(
                 author=cls.user,
-                text='Тестовая запись 3',
+                text='Test post 3',
                 group=PaginatorPagesTests.group,
             )
 
@@ -190,9 +190,9 @@ class PaginatorPagesTests(TestCase):
         self.authorized_client2.force_login(self.user2)
 
     def test_paginator(self):
-        """Количество постов на первых страницах:
-        index, group_list, profile и follow_index равно 10,
-        на вторых - 3.
+        """The number of posts at the first pages:
+        index, group_list, profile и follow_index is 10,
+        at second is 3.
         """
 
         templates = (
@@ -237,8 +237,7 @@ class SubcribtionTests(TestCase):
         self.authorized_client3.force_login(self.user3)
 
     def test_follow(self):
-        """Авторизованный пользователь может
-        подписываться на других пользователей."""
+        """An authorized user can subscribe to other users."""
 
         following_number_old = Follow.objects.filter(
             user=self.user1.id,
@@ -259,8 +258,7 @@ class SubcribtionTests(TestCase):
         self.assertEqual(following.author, self.user2)
 
     def test_unfollow(self):
-        """Авторизованный пользователь может
-        отписываться от других пользователей."""
+        """An authorized user can unfollow other users."""
 
         Follow.objects.create(
             user=self.user1,
@@ -281,14 +279,13 @@ class SubcribtionTests(TestCase):
         self.assertEqual(following_number_new, 0)
 
     def test_new_post_in_news(self):
-        """Новая запись пользователя появляется
-        в ленте тех, кто на него подписан
-        и не появляется в ленте тех, кто не подписан.
+        """The new user post appears in the feed of those who follow him
+        and does not appear in the feed of those who do not follow.
         """
 
         post = Post.objects.create(
             author=self.user2,
-            text='Тестовая запись пользователя 2',
+            text='Test post of the second user',
         )
         Follow.objects.create(
             user=self.user1,

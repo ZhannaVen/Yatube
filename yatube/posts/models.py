@@ -54,7 +54,7 @@ class Post(models.Model):
     class Meta:
         ordering = ('-pub_date',)
         verbose_name = 'Post'
-        verbose_name_plural = 'Post'
+        verbose_name_plural = 'Posts'
 
     def __str__(self):
         return self.text[:15]

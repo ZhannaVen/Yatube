@@ -40,9 +40,9 @@ class PostModelTest(TestCase):
 
         group = self.group
         verbose_names = {
-            'title': 'Название сообщества',
-            'slug': 'Slug сообщества',
-            'description': 'Описание'
+            'title': 'Group name',
+            'slug': 'Group slug',
+            'description': 'Group description'
         }
         for field, verbose_name in verbose_names.items():
             with self.subTest(field=field):
@@ -51,8 +51,8 @@ class PostModelTest(TestCase):
 
         verbose_name_meta = group._meta.verbose_name
         verbose_names_meta = group._meta.verbose_name_plural
-        self.assertEqual(verbose_name_meta, 'Сообщество')
-        self.assertEqual(verbose_names_meta, 'Сообщества')
+        self.assertEqual(verbose_name_meta, 'Group')
+        self.assertEqual(verbose_names_meta, 'Groups')
 
     def test_verbose_name_post(self):
         """Verbose_name fields of the Post model are the same as expected.
@@ -60,10 +60,10 @@ class PostModelTest(TestCase):
 
         post = self.post
         verbose_names = {
-            'text': 'Текст поста',
-            'pub_date': 'Дата создания',
-            'author': 'Автор',
-            'group': 'Сообщество'
+            'text': 'Post text',
+            'pub_date': 'Date of publication',
+            'author': 'Author',
+            'group': 'Group'
         }
         for field, verbose_name in verbose_names.items():
             with self.subTest(field=field):
@@ -72,8 +72,8 @@ class PostModelTest(TestCase):
 
         verbose_name_meta = post._meta.verbose_name
         verbose_names_meta = post._meta.verbose_name_plural
-        self.assertEqual(verbose_name_meta, 'Пост')
-        self.assertEqual(verbose_names_meta, 'Посты')
+        self.assertEqual(verbose_name_meta, 'Post')
+        self.assertEqual(verbose_names_meta, 'Posts')
 
     def test_help_text(self):
         """Help_text of the title field of the Post model is as expected.

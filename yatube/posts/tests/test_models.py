@@ -12,17 +12,19 @@ class PostModelTest(TestCase):
         super().setUpClass()
         cls.user = User.objects.create_user(username='auth')
         cls.group = Group.objects.create(
-            title='Тестовая группа',
-            slug='Тестовый слаг',
-            description='Тестовое описание',
+            title='Test group',
+            slug='test_slag',
+            description='Test description',
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовый пост 1234567890',
+            text='Test post 1234567890',
         )
 
     def test_models_have_correct_object_names(self):
-        """Проверяем, что у моделей корректно работает __str__."""
+        """The function checks that method __str__
+        works correctly for the models.
+        """
 
         objects = {
             self.group: self.group.title,
@@ -33,7 +35,8 @@ class PostModelTest(TestCase):
                 self.assertEqual(value, str(key))
 
     def test_verbose_name_group(self):
-        """verbose_name полей модели Group совпадают с ожидаемыми."""
+        """Verbose_name fields of the Group model are as expected.
+        """
 
         group = self.group
         verbose_names = {
@@ -52,7 +55,7 @@ class PostModelTest(TestCase):
         self.assertEqual(verbose_names_meta, 'Сообщества')
 
     def test_verbose_name_post(self):
-        """verbose_name полей модели Post совпадают с ожидаемыми."""
+        """Verbose_name fields of the Group model are the same as expected."""
 
         post = self.post
         verbose_names = {
@@ -72,7 +75,8 @@ class PostModelTest(TestCase):
         self.assertEqual(verbose_names_meta, 'Посты')
 
     def test_help_text(self):
-        """help_text поля title модели Post совпадает с ожидаемым."""
+        """Help_text of the title field of the Post model is as expected.
+        """
         post = self.post
         help_text = post._meta.get_field('group').help_text
         self.assertEqual(

@@ -17,13 +17,13 @@ class PostURLTests(TestCase):
         cls.user = User.objects.create_user(username='TestUser')
         cls.user_not_author = User.objects.create_user(username='TestUser2')
         cls.group = Group.objects.create(
-            title='Тестовая группа',
+            title='Test group',
             slug='test_group',
-            description='Тестовое описание',
+            description='Test description',
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовая запись 1',
+            text='Test post 1',
         )
         cls.urls = (
             ('posts:index', None),
@@ -45,7 +45,7 @@ class PostURLTests(TestCase):
         self.authorized_client2.force_login(self.user_not_author)
 
     def test_url_exists_at_desired_location(self):
-        """Проверка namespace:name = URL."""
+        """The function checks namespace:name = URL."""
 
         namespaces = (
             ('posts:index', None, '/'),
@@ -82,8 +82,8 @@ class PostURLTests(TestCase):
                 self.assertEqual(reverse(namespace, args=args), url)
 
     def test_page_uses_correct_template(self):
-        """URL-адрес использует соответствующий шаблон.
-        Проверка namespace:name.
+        """URL uses the appropriate template.
+        Checking namespace:name.
         """
 
         templates = (
@@ -113,10 +113,9 @@ class PostURLTests(TestCase):
                 self.assertTemplateUsed(response, template)
 
     def test_urls_are_available_to_author(self):
-        """Все URL-адреса доступны автору.
-        add_comment - переадресовывает автора на
-        страницу post_detail, follow и unfollow
-        переадресовывают на страницу profile.
+        """The author has access to all URLs.
+        Add_comment redirects author to page - post_detail, follow and unfollow
+        redirect to profile.
         """
 
         for url, args in self.urls:
@@ -140,11 +139,10 @@ class PostURLTests(TestCase):
                         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_urls_are_available_to_not_author_except(self):
-        """Все URL-адреса, кроме post_edit, add_comment, profile_follow
-        и profile_unfollow -  доступны не автору, адрес post_edit -
-        перенаправляет не автора на post_detail, add_comment - переадресовывает
-        не автора на страницу post_detail, follow и unfollow переадресовывают
-        на страницу profile.
+        """All URLs, except post_edit, add_comment, profile_follow
+        и profile_unfollow are available not only to author, post_edit -
+        redirects not an author to post_detail, add_comment - redirects
+        not an author to post_detail, follow и unfollow redirect to profile.
         """
 
         for url, args in self.urls:
@@ -168,11 +166,11 @@ class PostURLTests(TestCase):
                         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_urls_are_available_to_guest_except(self):
-        """Все URL-адреса, кроме post_edit, post_create,  add_comment,
-        profile_follow, profile_unfollow и follow_index доступны
-        неавторизованному пользователю, а адреса post_edit, post_create,
+        """All URLs, except post_edit, post_create,  add_comment,
+        profile_follow, profile_unfollow и follow_index are available
+        to unauthorized users, and post_edit, post_create,
         add_comment, profile_follow, profile_unfollow и follow_index -
-        перенаправляют неавторизованного пользователя на login,
+        redirect unauthorized user to login,
         """
 
         for url, args in self.urls:
@@ -194,13 +192,13 @@ class PostURLTests(TestCase):
                     self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_unexisting_page_all_user(self):
-        """Страница /posts/unexisting_page/ доступна любому пользователю."""
+        """Page /posts/unexisting_page/ is availible to any user."""
 
         response = self.client.get('posts:unexisting_page')
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_unexisting_page_custom_template(self):
-        """Страница 404 отдает кастомный шаблон."""
+        """Page 404 returns a custom template."""
 
         response = self.client.get('posts:unexisting_page')
         self.assertTemplateUsed(response, 'core/404.html')

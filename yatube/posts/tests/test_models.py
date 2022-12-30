@@ -55,7 +55,8 @@ class PostModelTest(TestCase):
         self.assertEqual(verbose_names_meta, 'Сообщества')
 
     def test_verbose_name_post(self):
-        """Verbose_name fields of the Group model are the same as expected."""
+        """Verbose_name fields of the Post model are the same as expected.
+        """
 
         post = self.post
         verbose_names = {

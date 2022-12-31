@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Войти{% endblock %}
+{% block title %}Sign in{% endblock %}
 {% block content %}
 {% load user_filters %}
   <div class="row justify-content-center">
     <div class="col-md-8 p-5">
       <div class="card">
         <div class="card-header">
-          Войти на сайт
+          Sign in
         </div>
         <div class="card-body">
           {% include 'includes/form_errors.html' %}
@@ -19,10 +19,10 @@
             {% include 'includes/form.html' %}
             <div class="col-md-6 offset-md-4">
               <button type="submit" class="btn btn-primary">
-                Войти
+                Sign in
               </button>
               <a href="{% url 'password_reset' %}" class="btn btn-link">
-                Забыли пароль?
+                Forgot your password?
               </a>
             </div>
           </form>

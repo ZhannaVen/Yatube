@@ -1,18 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}
-   Профайл пользователя {{ profile }} 
+   User's profile {{ profile }} 
 {% endblock %}
 {% block content %}
   <div class="container py-5">
     <div class="mb-5">    
-      <h1>Все посты пользователя: {{ profile }}</h1>
+      <h1>All publications of the user: {{ profile }}</h1>
       <h3>Всего постов: {{ profile.posts.count }} </h3>
       <ul>
-        <li>Подписок: {{ profile.following.count }}</li>
-        <li>Подписчиков: {{ profile.follower.count }}</li>
+        <li>Following: {{ profile.following.count }}</li>
+        <li>Followers: {{ profile.follower.count }}</li>
       </ul>
       {% ifequal profile user %}
-        <p>Сам на себя не подпишешься</p>
+        <p>You can not subscribe to yourself</p>
       {% else %}
         {% if user.is_authenticated %}
         {% if following %}
@@ -20,14 +20,14 @@
           class="btn btn-lg btn-light"
           href="{% url 'posts:profile_unfollow' profile.username %}" role="button"
           >
-            Отписаться
+            Unfollow
           </a>
        {% else %}
           <a
             class="btn btn-lg btn-primary"
             href="{% url 'posts:profile_follow' profile.username %}" role="button"
           >
-            Подписаться
+            Follow
           </a>
         {% endif %}
         {% endif %}

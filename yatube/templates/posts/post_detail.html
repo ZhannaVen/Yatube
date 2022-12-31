@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load thumbnail %}
 {% block title %}
-  Подробная информация 
+  Detailed information 
 {% endblock %}
 {% block content %}
 
@@ -9,7 +9,7 @@
     <aside class="col-12 col-md-3">
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          Дата публикации: {{ post.pub_date|date:"d E Y" }} 
+          Date of publication: {{ post.pub_date|date:"d E Y" }} 
         </li>
         <li class="list-group-item">
           {% if post.group %}
@@ -17,16 +17,16 @@
             <a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.title }}</a>
           {% else %}
             <span style='color: red'>
-              Этой публикации нет ни в одном сообществе.
+              This publication does not belong to any group.
             </span>
           {% endif %} 
         </li>
         <li class="list-group-item">
-          Автор:
+          Author:
           <a href="{% url 'posts:profile' post.author%}"> {{ post.author }}</a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          Всего постов автора:  <span>{{ post.author.posts.count }}</span>
+          Number of posts of the author:  <span>{{ post.author.posts.count }}</span>
         </li>
       </ul>
     </aside>
@@ -39,7 +39,7 @@
         </p>
         {% if user == post.author %}
           <a class="btn btn-primary" href="{% url 'posts:post_edit' post.pk %}"> 
-            редактировать запись
+            edit post
           </a>
         {% endif %}
         {% include 'posts/includes/comment.html' %}

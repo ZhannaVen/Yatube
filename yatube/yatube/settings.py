@@ -1,8 +1,12 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = 'p^&(27$rih@-w3l&%b9y!o0c+mr2ic!^vefrq%p&@6r_d5ol4#'
+SECRET_KEY = os.getenv('SECRET_KEY', default='p^&(27$rih@-w3l&%b9y!o0c+mr2ic!^vefrq%p&@6r_d5ol4#')
 
 DEBUG = True
 
@@ -83,9 +87,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'Europe/Brussels'
 
 USE_I18N = True
 
